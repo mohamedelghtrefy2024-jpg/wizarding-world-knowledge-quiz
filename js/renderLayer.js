@@ -94,6 +94,14 @@ const RenderLayer = {
   _card(n) {
     const card = Utils.el("article", "card");
     card.dataset.type = n.type;
+
+    // صورة مصغّرة (TMDB لأفلام/مسلسلات، ويكيبيديا لأي نوع تاني) — نفس مصدر
+    // صورة نافذة التفاصيل، بس بمقاس أصغر يناسب الكارت. لو مفيش صورة، الصندوق
+    // بيتشال خالص بدل ما يسيب مساحة فاضية في كل كارت.
+    const media = Utils.el("div", "card__media card__media--loading");
+    card.appendChild(media);
+    this._loadCardImage(n, media);
+
     const badge = Utils.el("span", "card__badge", this.typeLabel(n.type));
     const title = Utils.el("h4", "card__title", n.title);
     const desc = Utils.el("p", "card__desc", n.shortDescription || "");
@@ -102,6 +110,24 @@ const RenderLayer = {
     card.appendChild(desc);
     card.addEventListener("click", () => this.onNodeClick(n.id));
     return card;
+  },
+
+  async _loadCardImage(node, media) {
+    const data = await BusinessLayer.fetchNodeImage(node);
+    // الكارت ممكن يكون اتشال من الصفحة (فلترة/بحث جديد) قبل ما الطلب يخلص.
+    if (!media.isConnected) return;
+    media.classList.remove("card__media--loading");
+    if (!data || !data.poster) {
+      media.remove();
+      return;
+    }
+    const img = document.createElement("img");
+    img.className = "card__poster";
+    img.src = data.poster;
+    img.alt = node.title;
+    img.loading = "lazy";
+    img.addEventListener("error", () => media.remove());
+    media.appendChild(img);
   },
 
   renderTimeline(container) {
