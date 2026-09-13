@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خريطة عالم Wizarding World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&family=EB+Garamond:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div id="app">
+
+  <header class="app-header">
+    <h1 id="appTitle">خريطة عالم Wizarding World</h1>
+    <p id="appSubtitle">خريطة معرفية تفاعلية لعالم هاري بوتر وFantastic Beasts</p>
+  </header>
+
+  <div class="toolbar">
+    <div class="toolbar__group">
+      <button id="btnRows" class="toolbar__btn toolbar__btn--active" data-i18n="toolbar.rows">📜 عرض القوائم</button>
+      <button id="btnGraph" class="toolbar__btn" data-i18n="toolbar.graph">🕸️ عرض الشبكة</button>
+      <button id="btnTimeline" class="toolbar__btn" data-i18n="toolbar.timeline">⏳ الخط الزمني</button>
+      <button id="btnStats" class="toolbar__btn" data-i18n="toolbar.stats">📊 إحصائيات</button>
+      <button id="btnPath" class="toolbar__btn" data-i18n="toolbar.path">🔗 المسار والمجموعات</button>
+    </div>
+    <div class="toolbar__data">
+      <button id="btnExport" class="toolbar__data-btn" data-i18n="toolbar.export">⬇️ تصدير</button>
+      <button id="btnImport" class="toolbar__data-btn" data-i18n="toolbar.import">⬆️ استيراد</button>
+      <input id="importFileInput" type="file" accept="application/json" style="display:none">
+    </div>
+    <button id="btnLang" class="toolbar__lang">AR / EN</button>
+  </div>
+
+  <div class="controls">
+    <input id="searchInput" type="text" data-i18n-placeholder="search.placeholder" placeholder="دوّر عن فيلم، شخصية، عائلة، مكان...">
+    <div id="filterChips" class="chips"></div>
+  </div>
+
+  <main>
+    <section id="view-rows" class="view view--active"></section>
+
+    <section id="view-graph" class="view">
+      <div id="legend" class="legend"></div>
+      <div class="graph-wrap">
+        <svg id="graphSvg"></svg>
+      </div>
+    </section>
+
+    <section id="view-timeline" class="view"></section>
+
+    <section id="view-stats" class="view"></section>
+
+    <section id="view-path" class="view"></section>
+  </main>
+
+  <footer class="app-footer" data-i18n="footer.dataNote">
+    البيانات مبنية على أحداث الأفلام والمسرحية والكتب الرسمية (Canon)، مع الإشارة للمصدر عند كل علاقة.
+  </footer>
+</div>
+
+<div id="overlay" class="overlay"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/storageLayer.js"></script>
+<script src="js/knowledgeLayer.js"></script>
+<script src="js/businessLayer.js"></script>
+<script src="js/graphLayer.js"></script>
+<script src="js/renderLayer.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

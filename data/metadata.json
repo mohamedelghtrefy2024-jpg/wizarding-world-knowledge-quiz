@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectName": "Wizarding World Knowledge Graph",
+  "lastMigration": "2026-09-13",
+  "nodeCount": 98,
+  "edgeCount": 210,
+  "groupCount": 8,
+  "supportedNodeTypes": [
+    "movie",
+    "tv",
+    "play",
+    "game",
+    "character",
+    "family",
+    "house",
+    "organization",
+    "location",
+    "artifact",
+    "event",
+    "creature",
+    "spell"
+  ],
+  "supportedEdgeTypes": [
+    "founded",
+    "created",
+    "enemy_of",
+    "ally_of",
+    "member_of",
+    "mentor_of",
+    "student_of",
+    "parent_of",
+    "child_of",
+    "sibling_of",
+    "married_to",
+    "owns",
+    "defeated",
+    "first_appeared",
+    "appears_in",
+    "connected_to",
+    "located_in",
+    "attends"
+  ]
+}

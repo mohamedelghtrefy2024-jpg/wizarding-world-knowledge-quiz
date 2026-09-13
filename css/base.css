@@ -1,0 +1,83 @@
+:root {
+  --ink: #14171C;
+  --panel: #1B1F27;
+  --panel-2: #22262F;
+  --parchment: #EDE6D6;
+  --text: #E9E2CF;
+  --text-muted: #9C927B;
+  --burgundy: #8B1E2E;
+  --gold: #C9A227;
+  --emerald: #2F6E4E;
+  --steel: #3F5D7D;
+  --border: #33384280;
+  --radius: 3px;
+  --font-display: "Amiri", "EB Garamond", Georgia, serif;
+  --font-body: "Tajawal", "Inter", -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+[dir="ltr"] { --font-display: "EB Garamond", Georgia, serif; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--gold);
+  margin: 0 0 0.5em;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 4rem;
+}
+
+.app-header {
+  text-align: center;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+}
+
+.app-header h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: 0.02em;
+}
+
+.app-header p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.view { display: none; }
+.view--active { display: block; }
+
+.empty-state {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem;
+}
+
+footer.app-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}

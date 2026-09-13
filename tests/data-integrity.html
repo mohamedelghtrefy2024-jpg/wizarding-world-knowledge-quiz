@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>فحص سلامة البيانات — Wizarding World Knowledge Graph</title>
+<style>
+  body { font-family: monospace; background: #14171C; color: #E9E2CF; padding: 2rem; }
+  h1 { color: #C9A227; }
+  .ok { color: #4caf50; }
+  .fail { color: #e05252; }
+  ul { line-height: 1.6; }
+</style>
+</head>
+<body>
+<h1>فحص سلامة البيانات</h1>
+<div id="output">جارٍ الفحص...</div>
+
+<script src="../js/config.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/knowledgeLayer.js"></script>
+<script>
+(async () => {
+  // rebase data paths since this file lives in /tests, not project root
+  CONFIG.DATA_PATHS.nodes = "../data/nodes.json";
+  CONFIG.DATA_PATHS.edges = "../data/edges.json";
+  CONFIG.DATA_PATHS.groups = "../data/groups.json";
+  CONFIG.DATA_PATHS.metadata = "../data/metadata.json";
+
+  const out = document.getElementById("output");
+  try {
+    await KnowledgeLayer.load();
+    const issues = KnowledgeLayer.validateIntegrity();
+    const metrics = KnowledgeLayer.computeMetrics();
+
+    out.innerHTML = "";
+    const summary = document.createElement("p");
+    summary.textContent = `تم تحميل ${metrics.totalNodes} عقدة، ${metrics.totalEdges} علاقة، ${metrics.totalGroups} حقبة زمنية.`;
+    out.appendChild(summary);
+
+    const status = document.createElement("p");
+    status.className = issues.length === 0 ? "ok" : "fail";
+    status.textContent = issues.length === 0
+      ? "✅ صفر مشاكل سلامة بيانات."
+      : `❌ ${issues.length} مشكلة اتكشفت:`;
+    out.appendChild(status);
+
+    if (issues.length > 0) {
+      const list = document.createElement("ul");
+      for (const issue of issues) {
+        const li = document.createElement("li");
+        li.className = "fail";
+        li.textContent = issue;
+        list.appendChild(li);
+      }
+      out.appendChild(list);
+    }
+
+    const typesTitle = document.createElement("p");
+    typesTitle.textContent = "التوزيع حسب النوع:";
+    out.appendChild(typesTitle);
+    const typesList = document.createElement("ul");
+    for (const [type, count] of Object.entries(metrics.byType)) {
+      const li = document.createElement("li");
+      li.textContent = `${type}: ${count}`;
+      typesList.appendChild(li);
+    }
+    out.appendChild(typesList);
+  } catch (err) {
+    out.innerHTML = "";
+    const p = document.createElement("p");
+    p.className = "fail";
+    p.textContent = "خطأ أثناء التحميل: " + err.message;
+    out.appendChild(p);
+  }
+})();
+</script>
+</body>
+</html>
