@@ -65,5 +65,12 @@
   "toolbar.import": "⬆️ Import",
   "data.exportSuccess": "Data snapshot downloaded successfully.",
   "data.importSuccess": "Data imported successfully.",
-  "data.importError": "Import failed — invalid file or data integrity issues."
+  "data.importError": "Import failed — invalid file or data integrity issues.",
+  "detail.loadingImage": "Loading image...",
+  "detail.noImage": "No image available for this item.",
+  "detail.enSourceNote": "This summary is from English Wikipedia (no sufficient Arabic version found).",
+  "detail.viewSource": "Source ↗",
+  "graph.zoomIn": "➕ Zoom in",
+  "graph.zoomOut": "➖ Zoom out",
+  "graph.zoomReset": "⟳ Reset"
 }

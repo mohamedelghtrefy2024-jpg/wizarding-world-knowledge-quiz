@@ -7,5 +7,14 @@ const StorageLayer = {
   },
   setView(view) {
     localStorage.setItem(CONFIG.STORAGE_KEYS.view, view);
+  },
+
+  // ---- كاش صور TMDB/ويكيبيديا (عشان منضربش نفس الـ API كل مرة يتفتح فيها نفس العنصر) ----
+  getImageCache() {
+    try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.imageCache)) || {}; }
+    catch (e) { console.warn("فشل قراءة كاش الصور من localStorage، هيتم البدء بكاش فاضي", e); return {}; }
+  },
+  setImageCache(cache) {
+    localStorage.setItem(CONFIG.STORAGE_KEYS.imageCache, JSON.stringify(cache));
   }
 };

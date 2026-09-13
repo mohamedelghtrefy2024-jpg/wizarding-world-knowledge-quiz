@@ -294,6 +294,13 @@ const RenderLayer = {
       panel.appendChild(Utils.el("p", "detail-panel__era", KnowledgeLayer.getGroupName(node.group)));
     }
 
+    // صورة/بوستر خارجي (TMDB لأفلام/مسلسلات، ويكيبيديا لأي نوع تاني) —
+    // بتتحمّل بشكل غير متزامن عشان مفتحش نافذة التفاصيل مستنية الشبكة.
+    const mediaBox = Utils.el("div", "detail-panel__media detail-panel__media--loading");
+    mediaBox.appendChild(Utils.el("span", "detail-panel__media-status", I18n.t("detail.loadingImage")));
+    panel.appendChild(mediaBox);
+    this._loadNodeImage(node, mediaBox);
+
     panel.appendChild(Utils.el("h3", "detail-panel__section-title", I18n.t("detail.description")));
     panel.appendChild(Utils.el("p", "detail-panel__desc",
       node.description || node.shortDescription || I18n.t("detail.noDescription")));
@@ -319,5 +326,46 @@ const RenderLayer = {
 
     overlay.appendChild(panel);
     overlay.classList.add("overlay--open");
+  },
+
+  async _loadNodeImage(node, mediaBox) {
+    const data = await BusinessLayer.fetchNodeImage(node);
+    // ممكن المستخدم يكون قفل النافذة أو فتح عنصر تاني قبل ما الطلب يخلص —
+    // نتأكد إن الـ mediaBox لسه في الصفحة قبل ما نلمسه.
+    if (!mediaBox.isConnected) return;
+
+    mediaBox.classList.remove("detail-panel__media--loading");
+    mediaBox.innerHTML = "";
+
+    if (!data || !data.poster) {
+      mediaBox.classList.add("detail-panel__media--empty");
+      mediaBox.appendChild(Utils.el("span", "detail-panel__media-status", I18n.t("detail.noImage")));
+      return;
+    }
+
+    const img = document.createElement("img");
+    img.className = "detail-panel__poster";
+    img.src = data.poster;
+    img.alt = node.title;
+    img.loading = "lazy";
+    img.addEventListener("error", () => {
+      img.remove();
+      mediaBox.classList.add("detail-panel__media--empty");
+      mediaBox.appendChild(Utils.el("span", "detail-panel__media-status", I18n.t("detail.noImage")));
+    });
+    mediaBox.appendChild(img);
+
+    if (data.viaEnglish) {
+      mediaBox.appendChild(Utils.el("span", "detail-panel__media-note", I18n.t("detail.enSourceNote")));
+    }
+    if (data.sourceUrl) {
+      const link = document.createElement("a");
+      link.className = "detail-panel__media-source";
+      link.href = data.sourceUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = I18n.t("detail.viewSource");
+      mediaBox.appendChild(link);
+    }
   }
 };

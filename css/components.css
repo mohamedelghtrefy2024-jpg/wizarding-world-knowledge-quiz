@@ -181,13 +181,32 @@
 .timeline__item--muted { color: var(--text-muted); cursor: default; }
 
 /* Graph */
+.graph-toolbar {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+.graph-toolbar__btn {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+}
+.graph-toolbar__btn:hover { border-color: var(--gold); color: var(--gold); }
+
 .graph-wrap {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
 }
-#graphSvg { width: 100%; height: auto; display: block; }
+/* touch-action: none عشان الـ pinch-to-zoom على الموبايل يتحكم فيه d3.zoom
+   نفسه بدل ما المتصفح يزوم في الصفحة كلها. cursor بيتغير أثناء السحب
+   عشان يوضح إن الشبكة قابلة للتحريك. */
+#graphSvg { width: 100%; height: auto; display: block; touch-action: none; cursor: grab; }
+#graphSvg:active { cursor: grabbing; }
 
 .legend {
   display: flex;
@@ -282,6 +301,43 @@
 .detail-panel__era { color: var(--text-muted); font-size: 0.85rem; margin-top: -0.4rem; }
 .detail-panel__section-title { font-size: 0.95rem; margin-top: 1.2rem; }
 .detail-panel__desc { font-size: 0.92rem; line-height: 1.6; color: var(--text); }
+
+/* صورة/بوستر العنصر في نافذة التفاصيل (TMDB أو ويكيبيديا) */
+.detail-panel__media {
+  margin-top: 0.9rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+.detail-panel__media--loading,
+.detail-panel__media--empty {
+  background: var(--panel-2);
+  border: 1px dashed var(--border);
+  padding: 1.2rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.detail-panel__poster {
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: block;
+}
+.detail-panel__media-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+.detail-panel__media-source {
+  font-size: 0.78rem;
+  color: var(--gold);
+  text-decoration: none;
+}
+.detail-panel__media-source:hover { text-decoration: underline; }
 
 .relations-list { list-style: none; padding: 0; margin: 0; }
 .relations-list__item { border-top: 1px solid var(--border); padding: 0.5rem 0; }

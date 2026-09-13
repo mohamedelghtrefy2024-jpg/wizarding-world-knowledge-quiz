@@ -65,5 +65,12 @@
   "toolbar.import": "⬆️ استيراد",
   "data.exportSuccess": "تم تنزيل نسخة البيانات بنجاح.",
   "data.importSuccess": "تم استيراد البيانات بنجاح.",
-  "data.importError": "تعذّر الاستيراد — الملف غير صالح أو فيه مشاكل تكامل بيانات."
+  "data.importError": "تعذّر الاستيراد — الملف غير صالح أو فيه مشاكل تكامل بيانات.",
+  "detail.loadingImage": "جاري تحميل الصورة...",
+  "detail.noImage": "مفيش صورة متاحة لهذا العنصر.",
+  "detail.enSourceNote": "النبذة دي مأخوذة من ويكيبيديا الإنجليزية (مفيش نسخة عربية كافية).",
+  "detail.viewSource": "المصدر ↗",
+  "graph.zoomIn": "➕ تكبير",
+  "graph.zoomOut": "➖ تصغير",
+  "graph.zoomReset": "⟳ إعادة الضبط"
 }

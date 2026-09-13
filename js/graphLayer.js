@@ -3,6 +3,7 @@
 // not itself decide *what* is shown (BusinessLayer/RenderLayer own that).
 const GraphLayer = {
   simulation: null,
+  zoomBehavior: null,
 
   render(svgSelector, visibleNodes, onNodeClick) {
     const svg = d3.select(svgSelector);
@@ -11,6 +12,11 @@ const GraphLayer = {
     const width = CONFIG.GRAPH.width;
     const height = CONFIG.GRAPH.height;
     svg.attr("viewBox", `0 0 ${width} ${height}`);
+
+    // كل عناصر الرسم (روابط + عقد + تسميات) بتتحط جوه <g> واحدة، عشان
+    // الـ zoom/pan (تحت) يقدر يكبّرها/يحرّكها كوحدة واحدة بدل ما يلمس
+    // إحداثيات كل عنصر لوحده.
+    const zoomLayer = svg.append("g").attr("class", "zoom-layer");
 
     const visibleIds = new Set(visibleNodes.map(n => n.id));
     const links = KnowledgeLayer.edges
@@ -27,7 +33,7 @@ const GraphLayer = {
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collision", d3.forceCollide().radius(d => (CONFIG.NODE_TYPE_VISUALS[d.type]?.radius || 6) + 4));
 
-    const link = svg.append("g")
+    const link = zoomLayer.append("g")
       .attr("stroke", "#8a7a5c")
       .attr("stroke-opacity", 0.35)
       .selectAll("line")
@@ -35,7 +41,7 @@ const GraphLayer = {
       .join("line")
       .attr("stroke-width", d => Math.max(1, (d.weight || 3) / 3));
 
-    const node = svg.append("g")
+    const node = zoomLayer.append("g")
       .selectAll("circle")
       .data(nodesCopy)
       .join("circle")
@@ -49,7 +55,7 @@ const GraphLayer = {
 
     node.append("title").text(d => d.title);
 
-    const label = svg.append("g")
+    const label = zoomLayer.append("g")
       .selectAll("text")
       .data(nodesCopy)
       .join("text")
@@ -69,6 +75,25 @@ const GraphLayer = {
       node.attr("cx", d => d.x).attr("cy", d => d.y);
       label.attr("x", d => d.x).attr("y", d => d.y);
     });
+
+    // تكبير/تصغير بعجلة الماوس أو pinch على الموبايل، وسحب خلفية الشبكة
+    // للتحريك (pan). محصور بين 0.2x و4x عشان المستخدم مايضيعش الشبكة كلها
+    // ولا يزوم جوه أوي لدرجة إنها تفقد معناها.
+    this.zoomBehavior = d3.zoom()
+      .scaleExtent([0.2, 4])
+      .on("zoom", (event) => zoomLayer.attr("transform", event.transform));
+    svg.call(this.zoomBehavior);
+  },
+
+  // بتتنادى من أزرار +/-/إعادة الضبط في الواجهة (شوف app.js).
+  zoomBy(svgSelector, factor) {
+    if (!this.zoomBehavior) return;
+    d3.select(svgSelector).transition().duration(200).call(this.zoomBehavior.scaleBy, factor);
+  },
+
+  resetZoom(svgSelector) {
+    if (!this.zoomBehavior) return;
+    d3.select(svgSelector).transition().duration(200).call(this.zoomBehavior.transform, d3.zoomIdentity);
   },
 
   _drag(simulation) {

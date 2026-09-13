@@ -12,7 +12,20 @@ const CONFIG = {
 
   STORAGE_KEYS: {
     language: "hpmap_lang_v1",
-    view: "hpmap_view_v1"
+    view: "hpmap_view_v1",
+    imageCache: "hpmap_image_cache_v1"
+  },
+
+  // مصادر الصور/النبذات في نافذة التفاصيل. أفلام/مسلسلات بتتغطى كويس من
+  // TMDB. أي نوع تاني (شخصية، تعويذة، أداة، مخلوق...) بيروح لويكيبيديا
+  // مباشرة — TMDB أصلًا مفيهوش أي endpoint لشخصيات/أدوات كوميكس أو روايات
+  // خيالية غير التمثيل الحقيقي (ممثلين)، وده مش المطلوب هنا.
+  API: {
+    TMDB_KEY: "b20fc3fcea82ebacc9ec743cd6eb8f98",
+    TMDB_API_BASE: "https://api.themoviedb.org/3",
+    TMDB_IMG: "https://image.tmdb.org/t/p/w500",
+    TMDB_IMG_SMALL: "https://image.tmdb.org/t/p/w92",
+    WIKIPEDIA_SUMMARY: (lang) => `https://${lang}.wikipedia.org/api/rest_v1/page/summary/`
   },
 
   // Visual identity per node type: color + relative radius in the graph view.

@@ -18,6 +18,7 @@ const App = {
     this._wireFilters();
     this._wireLangToggle();
     this._wireDataTransfer();
+    this._wireGraphControls();
 
     this.currentView = StorageLayer.getView();
     this._applyI18nStatic();
@@ -102,6 +103,12 @@ const App = {
         RenderLayer.showToast(I18n.t("data.importError"), "error");
       }
     });
+  },
+
+  _wireGraphControls() {
+    Utils.byId("btnZoomIn").addEventListener("click", () => GraphLayer.zoomBy("#graphSvg", 1.4));
+    Utils.byId("btnZoomOut").addEventListener("click", () => GraphLayer.zoomBy("#graphSvg", 1 / 1.4));
+    Utils.byId("btnZoomReset").addEventListener("click", () => GraphLayer.resetZoom("#graphSvg"));
   },
 
   switchView(view) {
